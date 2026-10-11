@@ -15,6 +15,7 @@
 | 爬虫 / 采集 fixture | [crawlers.md](crawlers.md) (含番号入参) · [crawler-testing.md](crawler-testing.md) |
 | 来源插件 (影片刮削 / 播放) | [plugins.md](plugins.md) · [crawlers.md](crawlers.md) |
 | 站点覆盖 / 默认路由 | [content-routes.md](content-routes.md) |
+| Getchu QNB 排查与接手 | [getchu-qnb-handoff.md](getchu-qnb-handoff.md) |
 | API 端点 | [api.md](api.md) |
 | 前端文件索引 (路由 → 文件) | [frontend.md](frontend.md) |
 | 表结构 / 迁移 | [database.md](database.md) |

@@ -26,6 +26,7 @@
 
 位置: `docs/dev/` — 导航见 [`docs/dev/index.md`](docs/dev/index.md).
 **优先读文档**, 根据文档按需读源码.
+Getchu QNB 排查与接手记录见 [`docs/dev/getchu-qnb-handoff.md`](docs/dev/getchu-qnb-handoff.md).
 
 ### 文档的用途
 
