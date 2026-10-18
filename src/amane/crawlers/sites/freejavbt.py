@@ -22,7 +22,7 @@ class FreejavbtCrawler(Crawler):
         html = Selector(text=text)
         for item in html.xpath('//div[contains(@class,"category-page") and contains(@class,"video-list-item")]'):
             href = item.xpath(".//a/@href").get()
-            if href and is_same_number(_number_from_url(href), number):
+            if href and _matches_number(_number_from_url(href), number):
                 return urljoin(self.base_url, href)
         return None
 
@@ -30,7 +30,7 @@ class FreejavbtCrawler(Crawler):
         text = await self.client.get_html(url)
         html = Selector(text=text)
 
-        title = extract_text(html, '//h1[@class="entry-title"]/text()')
+        title = extract_text(html, '//h1[@class="entry-title"]/text()') or extract_text(html, "//main//h1[1]/text()")
         if not title:
             return None
 
@@ -48,7 +48,9 @@ class FreejavbtCrawler(Crawler):
         runtime_str = extract_text(html, '//strong[contains(text(),"収録時間")]/following-sibling::text()')
         runtime = self._parse_runtime(runtime_str)
         tags = extract_all_texts(html, '//strong[contains(text(),"ジャンル")]/following-sibling::a/text()')
-        cover = extract_text(html, '//article//img[contains(@class,"alignnone")]/@src')
+        cover = extract_text(html, '//article//img[contains(@class,"alignnone")]/@src') or extract_text(
+            html, "//main//video/@poster"
+        )
         extrafanart = extract_all_texts(html, '//article//a[contains(@href,".jpg")]/@href')
 
         return MediaMetadata(
@@ -78,3 +80,10 @@ def _number_from_url(url: str) -> str:
     """取链接末段作为番号; 广告外链的末段不是番号, 比对自然不中."""
     path = url.split("?", 1)[0].rstrip("/")
     return unquote(path.rsplit("/", 1)[-1]) if path else ""
+
+
+def _matches_number(candidate: str, number: str) -> bool:
+    if is_same_number(candidate, number):
+        return True
+    match = re.fullmatch(r"(.+)-(?:19|20)\d{2}", candidate)
+    return match is not None and is_same_number(match[1], number)
